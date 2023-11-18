@@ -4,7 +4,7 @@ import sys
 import pandas as pd 
 import argparse
 
-async def scrape_youtube_playlist(playlist_url):
+async def scrape_youtube_playlist(playlist_url,playlist_name):
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         page = await browser.new_page()
@@ -26,11 +26,9 @@ async def scrape_youtube_playlist(playlist_url):
            # title = await title_element.inner_text()
             link = await video_element.get_attribute('href')
             print(link)
-            playlist_data.append({ 'link': link})#'title': title,
+            playlist_data.append({ 'link': link}) #'title': title,
 
         await browser.close()
-
-        playlist_name = playlist_url.split('list=')[-1]
 
         # Create a DataFrame from the playlist_data
         df = pd.DataFrame(playlist_data)
@@ -40,22 +38,43 @@ async def scrape_youtube_playlist(playlist_url):
 
         return df
 
-loop = asyncio.get_event_loop()
+# loop = asyncio.get_event_loop()
 
 # Extract the playlist name from the URL
 
-if __name__ == "__main__":
-    # Crie um argumento para o URL da playlist
-    parser = argparse.ArgumentParser(description='YouTube Playlist Scraper')
-    parser.add_argument('playlist_url', type=str, help='URL da playlist do YouTube')
-    args = parser.parse_args()
+# if __name__ == "__main__":
+#     # Crie um argumento para o URL da playlist
+#     parser = argparse.ArgumentParser(description='YouTube Playlist Scraper')
+#     parser.add_argument('guide_playlist_path', type=str, help='guide_playlist Path ')
+#     args = parser.parse_args()
 
-    playlist_url = args.playlist_url
+#     guide_playlist_path = args.guide_playlist_path
+
+import os 
+
+print(os.getcwd())
+
+guide_playlist_path = 'D:\PEDRO\projects\github\yt_to_ponto_mp3\guide_playlist.csv'
+
+playlists = pd.read_csv(guide_playlist_path)
+
+n_playlists = len(playlists) 
+
+for i in range(n_playlists):
+    if playlists['nome'][i] == None:
+        playlist_name = f'playlist_{[i]}'
+    else:
+        playlist_name = playlists['nome'][i]
+        
+    playlist_url = playlists['playlist'][i]
+    print(f'Searching urls from -> {playlist_name} playlist\nPlaylist: {i}/{n_playlists - 1}')
+    print(playlist_url)
 
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(scrape_youtube_playlist(playlist_url))
+    loop.run_until_complete(scrape_youtube_playlist(playlist_url,playlist_name))
 
-    # Extrair o nome da playlist a partir da URL
-    playlist_name = playlist_url.split('list=')[-1]
 
-    print(f'Arquivo CSV "{playlist_name}.csv" criado com links dos vídeos.')
+# Extrair o nome da playlist a partir da URL
+playlist_name = playlist_url.split('list=')[-1]
+
+print(f'Arquivo CSV "{playlist_name}.csv" criado com links dos vídeos.')
