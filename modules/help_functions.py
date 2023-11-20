@@ -32,3 +32,28 @@ def listar_arquivos_em_pasta(caminho_da_pasta):
             return "O caminho especificado não é um diretório válido."
     except Exception as e:
         return f"Ocorreu um erro ao listar os arquivos: {str(e)}"
+
+# Definir a função de renomear um arquivo
+def renomear_arquivo(caminho, nome):
+  # Obter o nome antigo do arquivo
+  nome_antigo = os.path.basename(caminho)
+  # Obter a extensão do arquivo
+  print(nome)
+  nome_raw = nome.split('.')[0]
+  extensao = nome.split('.')[1]
+  # Normalizar o nome novo para a forma NFKD, que separa os caracteres base dos diacríticos
+  nome = unicodedata.normalize('NFKD', nome)
+  # Remover os diacríticos usando uma compreensão de lista
+  nome = ''.join([c for c in nome if not unicodedata.combining(c)])
+  # Substituir os espaços por underline usando o método replace
+  nome = nome.replace(' ', '_')
+  # Remover os caracteres especiais usando uma expressão regular
+  nome = re.sub('[^A-Za-z0-9_]', '', nome)
+  # Juntar o nome novo com a extensão do arquivo
+  nome_novo = nome_raw + '.' + extensao
+  # Obter o caminho novo do arquivo
+  caminho_novo = f"{caminho}/{nome_novo}"
+  # Renomear o arquivo usando o método rename
+  os.rename(caminho, caminho_novo)
+  # Retornar o caminho novo do arquivo
+  return caminho_novo
