@@ -6,6 +6,10 @@ import argparse
 import time
 import os 
 
+import nest_asyncio
+nest_asyncio.apply()
+
+
 local_file = os.path.abspath(__file__)
 
 # Obter o diretório local do arquivo Python
