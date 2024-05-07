@@ -46,7 +46,7 @@ async def scrape_youtube_playlist(playlist_url,playlist_name, path):
         df = pd.DataFrame(playlist_data)
 
         # Save the DataFrame to a CSV file
-        df.to_csv(f'{path}/{playlist_name}.csv', index=False, encoding='utf-8')
+        df.to_csv(f'../{playlist_name}.csv', index=False, encoding='utf-8')
 
         return df
 
