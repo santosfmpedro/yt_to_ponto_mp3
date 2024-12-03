@@ -2,7 +2,7 @@
 
 import pandas as pd 
 import os
-from pytube import YouTube
+#from pytube import YouTube
 from moviepy.editor import VideoFileClip
 # Importar o módulo unicodedata para converter caracteres unicode
 import unicodedata
@@ -10,17 +10,29 @@ import unicodedata
 import re
 from modules import help_functions as hp
 
+from pytubefix import YouTube
+from pytubefix.cli import on_progress
+ 
+#url = "url"
+ 
+#yt = YouTube(url, on_progress_callback = on_progress)
+#print(yt.title)
+ 
+#ys = yt.streams.get_highest_resolution()
+#ys.download()
+
 def download_video(video_url, dir):
     
     try:
             
-        yt = YouTube(video_url)
+        yt = YouTube(video_url, on_progress_callback = on_progress)
         video_stream = yt.streams.filter(file_extension='mp4').first()
+        
         video_stream.download(output_path=dir)
 
     except Exception as erro:
         print(erro)
-        print('Error Downloading video!')
+        print('Error Downloading video! aqui')
 
 def convert_mp4_to_mp3(dir_mp4,audio_filename, dir_mp3):
     
@@ -112,3 +124,4 @@ def download_playlist_mp3(playlist_name,path_playlist,output_dir,temp_dir):
     except Exception as erro:
         print(erro)
         print('Error downloading the playlist!')
+

@@ -28,7 +28,7 @@ async def scrape_youtube_playlist(playlist_url,playlist_name, path):
 
         # Wait for the page to load completely (you may need to adjust the timeout)
          # Aguarde o carregamento completo da página (você pode precisar ajustar o timeout)
-        #time.sleep(100)
+        time.sleep(50)
         await page.wait_for_selector('#thumbnail')
 
         # Extraia títulos e links dos vídeos
