@@ -6,6 +6,10 @@ import argparse
 import time
 import os 
 
+import nest_asyncio
+nest_asyncio.apply()
+
+
 local_file = os.path.abspath(__file__)
 
 # Obter o diretório local do arquivo Python
@@ -24,7 +28,7 @@ async def scrape_youtube_playlist(playlist_url,playlist_name, path):
 
         # Wait for the page to load completely (you may need to adjust the timeout)
          # Aguarde o carregamento completo da página (você pode precisar ajustar o timeout)
-        #time.sleep(100)
+        time.sleep(50)
         await page.wait_for_selector('#thumbnail')
 
         # Extraia títulos e links dos vídeos
@@ -46,7 +50,7 @@ async def scrape_youtube_playlist(playlist_url,playlist_name, path):
         df = pd.DataFrame(playlist_data)
 
         # Save the DataFrame to a CSV file
-        df.to_csv(f'{path}/{playlist_name}.csv', index=False, encoding='utf-8')
+        df.to_csv(f'../{playlist_name}.csv', index=False, encoding='utf-8')
 
         return df
 
